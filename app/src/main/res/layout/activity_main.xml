@@ -24,7 +24,6 @@
         android:weightSum="10">
 
 
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -46,9 +45,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/gray"
+
                     android:text="C"
+                    android:textSize="35sp"
                     tools:ignore="NestedWeights" />
 
                 <Button
@@ -58,8 +58,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/gray"
-
-                    android:text="b" />
+                    android:text="b"
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button_factorial"
@@ -67,9 +67,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/orange"
-                    android:text="!" />
+                    android:text="!"
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button_question"
@@ -77,9 +77,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/orange"
-                    android:text="\?" />
+                    android:text="\?"
+                    android:textSize="35sp" />
 
             </LinearLayout>
 
@@ -97,10 +97,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="4"
 
-                    android:text="4" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button5"
@@ -108,10 +108,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="5"
 
-                    android:text="5" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button6"
@@ -119,10 +119,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="6"
 
-                    android:text="6" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button_cardinal"
@@ -130,8 +130,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@color/orange"
-
-                    android:text="#" />
+                    android:text="#"
+                    android:textSize="35sp" />
 
 
             </LinearLayout>
@@ -149,10 +149,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="1"
 
-                    android:text="1" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button2"
@@ -160,10 +160,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="2"
 
-                    android:text="2" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button3"
@@ -171,10 +171,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="3"
 
-                    android:text="3" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button_add"
@@ -182,7 +182,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@color/orange"
-
+                    android:textSize="35sp"
                     android:text="+" />
 
 
@@ -203,8 +203,8 @@
                     android:layout_weight="2"
 
                     android:backgroundTint="@color/light_black"
-
-                    android:text="0" />
+                    android:text="0"
+                    android:textSize="35sp" />
 
 
                 <Button
@@ -213,10 +213,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-
                     android:backgroundTint="@color/light_black"
+                    android:text="."
 
-                    android:text="." />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/button_equals"
@@ -224,8 +224,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@color/orange"
-
-                    android:text="=" />
+                    android:text="="
+                    android:textSize="35sp" />
 
 
             </LinearLayout>
