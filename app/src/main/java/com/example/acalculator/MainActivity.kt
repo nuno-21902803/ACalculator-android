@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     var historico = mutableListOf<OperationUI>()
 
 
-    private val adapter = HistoryAdapter(::onOperationClick)
+    //private val adapter = HistoryAdapter(::onOperationClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "metodo onCreate invocado")
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "metodo onDestroy invocado")
         super.onDestroy()
     }
-
+/*
     private fun onOperationClick(op: String) {
         Toast.makeText(this, op, Toast.LENGTH_LONG).show()
     }
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(TAG, "O result é ${binding.textVisor.text}")
 
-    }
+    }*/
 }
 
 class OperationUI(
