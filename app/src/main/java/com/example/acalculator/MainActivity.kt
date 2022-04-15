@@ -50,10 +50,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.nav_calculator ->
                 NavigationManager.goToCalculatorFragment(supportFragmentManager)
-            R.id.nav_history -> NavigationManager.goToHistoryFragment(
-                supportFragmentManager,
-                "NC"
-            )
+            R.id.nav_history -> NavigationManager.goToHistoryFragment(supportFragmentManager)
         }
         binding.drawer.closeDrawer(GravityCompat.START)
         return true
@@ -70,6 +67,12 @@ class MainActivity : AppCompatActivity() {
             else -> super.onBackPressed()
         }
     }
+
+    fun addOperation(operation:OperationUI) {
+        operations.add(operation)
+    }
+
+    fun getOperations() = operations
 }
 
 

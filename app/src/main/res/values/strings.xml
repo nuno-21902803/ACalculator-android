@@ -3,5 +3,5 @@
     <string name="history">Histórico</string>
     <string name="drawer_open">Abertu</string>
     <string name="drawer_closed">Fechadu</string>
-
+    <string name="operationDetails">Detalhes</string>
 </resources>
