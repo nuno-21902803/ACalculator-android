@@ -9,6 +9,16 @@
         <entry key="..\:/Comp-movel-prototipos/ACalculator-android/app/src/main/res/layout/activity_main.xml" value="0.21693840579710144" />
         <entry key="..\:/Comp-movel-prototipos/ACalculator-android/app/src/main/res/layout/fragment_calculator.xml" value="0.1" />
         <entry key="..\:/Comp-movel-prototipos/ACalculator-android/app/src/main/res/layout/item_expression.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/drawable/ic_baseline_calculate_24.xml" value="0.106" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/drawable/logo.xml" value="0.1445" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout-land/fragment_calculator.xml" value="0.1" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout/activity_main.xml" value="0.16018518518518518" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout/fragment_calculator.xml" value="0.1" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout/fragment_history.xml" value="0.18034447821681865" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout/fragment_operation_detail.xml" value="0.18034447821681865" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/layout/item_expression.xml" value="0.18034447821681865" />
+        <entry key="..\:/Users/nunof/AndroidStudioProjects/ACalculator-android/app/src/main/res/menu/drawer_menu.xml" value="0.19907407407407407" />
       </map>
     </option>
   </component>

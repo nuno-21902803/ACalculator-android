@@ -6,12 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.acalculator.databinding.ActivityMainBinding
 import com.example.acalculator.databinding.FragmentCalculatorBinding
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.sql.Timestamp
 
 
 class CalculatorFragment : Fragment() {
@@ -92,13 +88,10 @@ class CalculatorFragment : Fragment() {
             binding.textVisor.text.toString()
         ).build()
 
-        val timestamp = Timestamp(System.currentTimeMillis())
-
 
         val operationUI = OperationUI(
             binding.textVisor.text.toString(),
-            expression.evaluate().toString(),
-            timestamp
+            expression.evaluate().toString()
         )
 //        historico.add(operationUI)
   //      adapter.updateItems(historico)
