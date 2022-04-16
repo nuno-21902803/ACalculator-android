@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.acalculator.databinding.FragmentCalculatorBinding
 import net.objecthunter.exp4j.ExpressionBuilder
 
 
 class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentCalculatorBinding
-    private val TAG = CalculatorFragment::class.java.simpleName
+    private lateinit var viewModel: CalculatorViewModel
 
 
     override fun onCreateView(
@@ -26,73 +28,42 @@ class CalculatorFragment : Fragment() {
             R.layout.fragment_calculator, container, false
         )
         binding = FragmentCalculatorBinding.bind(view)
+
+        //associar este fragmento ao viewmodel
+        viewModel = ViewModelProvider(this).get(
+            CalculatorViewModel::class.java
+        )
+        binding.textVisor.text = viewModel.getDisplayValue()
+
         return binding.root
     }
 
 
-    private fun onOperationClick(op: String) {
-        //     Toast.makeText(this, op, Toast.LENGTH_LONG).show()
-    }
-
     override fun onStart() {
         super.onStart()
-        binding.button1.setOnClickListener { onClickSymbol("1") }
-        binding.button2.setOnClickListener { onClickSymbol("2") }
-        binding.button3.setOnClickListener { onClickSymbol("3") }
-        binding.button4.setOnClickListener { onClickSymbol("4") }
-        binding.button5.setOnClickListener { onClickSymbol("5") }
-        binding.button6.setOnClickListener { onClickSymbol("6") }
-        binding.buttonAdd.setOnClickListener { onClickSymbol("+") }
-        binding.buttonDot.setOnClickListener { onClickSymbol(".") }
-        binding.buttonEquals.setOnClickListener { onClickEquals() }
-
-
-
-
+        binding.button1.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("1") }
+        binding.button2.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("2") }
+        binding.button3.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("3") }
+        binding.button4.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("4") }
+        binding.button5.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("5") }
+        binding.button6.setOnClickListener { binding.textVisor.text = viewModel.onClickSymbol("6") }
+        binding.buttonAdd.setOnClickListener {
+            binding.textVisor.text = viewModel.onClickSymbol("+")
+        }
+        binding.buttonDot.setOnClickListener {
+            binding.textVisor.text = viewModel.onClickSymbol(".")
+        }
         binding.buttonClean.setOnClickListener {
-            Log.i(TAG, "Click no botão C")
-            binding.textVisor.text = "0"
-
+            binding.textVisor.text = viewModel.onClickSymbol("C")
         }
-
         binding.buttonBackspace.setOnClickListener {
-            Log.i(TAG, "Click no botão B")
-            if (binding.textVisor.text.length > 1) {
-                binding.textVisor.text =
-                    binding.textVisor.text.subSequence(0, binding.textVisor.text.length - 1)
-
-            } else {
-                binding.textVisor.text = "0"
-            }
-
+            binding.textVisor.text = viewModel.onClickSymbol("B")
+        }
+        binding.buttonEquals.setOnClickListener {
+            binding.textVisor.text = viewModel.onClickEquals()
         }
 
     }
 
-    private fun onClickSymbol(s: String) {
-        Log.i(TAG, "Click no botão $s")
 
-        if (binding.textVisor.text == "0") {
-            binding.textVisor.text = s
-        } else {
-            binding.textVisor.append(s)
-        }
-    }
-
-    private fun onClickEquals() {
-        Log.i(TAG, "Click no botão =")
-        val expression = binding.textVisor.text.toString()
-        val expressionBuilder = ExpressionBuilder(
-            expression
-        ).build()
-        val result = expressionBuilder.evaluate().toString()
-        binding.textVisor.text = result
-        (activity as MainActivity).addOperation(
-            OperationUI(
-                expression = expression,
-                result = result
-            )
-        )
-        Log.i(TAG, "O resultado é $result")
-    }
 }

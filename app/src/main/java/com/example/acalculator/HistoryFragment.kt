@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acalculator.databinding.FragmentHistoryBinding
 
@@ -16,7 +17,10 @@ private const val ARG_OPERATIONS = "param1"
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
+    private lateinit var viewModel: CalculatorViewModel
+
     private var operations: ArrayList<OperationUI>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,7 @@ class HistoryFragment : Fragment() {
             getString(R.string.history)
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_history, container, false)
+        viewModel = ViewModelProvider(this).get(CalculatorViewModel::class.java)
         binding = FragmentHistoryBinding.bind(view)
         return binding.root
     }
@@ -40,8 +45,7 @@ class HistoryFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         binding.rvHistoric.layoutManager = LinearLayoutManager(activity as Context)
-        binding.rvHistoric.adapter =
-            HistoryAdapter(parentFragmentManager, (activity as MainActivity).getOperations())
+        viewModel.getHistory { operations }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")

@@ -30,7 +30,7 @@ class HistoryAdapter(
         }
 
         holder.binding.textExpression.text = items[position].expression
-        holder.binding.textResult.text = items[position].result
+        holder.binding.textResult.text = items[position].result.toString()
     }
 
     override fun getItemCount() = items.size

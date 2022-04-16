@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 @Parcelize
 class OperationUI(
     val expression: String,
-    val result: String,
+    val result: Double,
     private val timeStamp: Long = System.currentTimeMillis()
 ) : Parcelable {
 
