@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.example.acalculator.databinding.FragmentCalculatorBinding
 import net.objecthunter.exp4j.ExpressionBuilder
 
@@ -15,22 +16,22 @@ class CalculatorFragment : Fragment() {
     private val TAG = CalculatorFragment::class.java.simpleName
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.app_name)
         val view = inflater.inflate(
             R.layout.fragment_calculator, container, false
         )
-        // Inflate the layout for this fragment
         binding = FragmentCalculatorBinding.bind(view)
         return binding.root
     }
 
 
     private fun onOperationClick(op: String) {
-   //     Toast.makeText(this, op, Toast.LENGTH_LONG).show()
+        //     Toast.makeText(this, op, Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {
@@ -66,9 +67,6 @@ class CalculatorFragment : Fragment() {
 
         }
 
-        //binding.rvHistoric?.layoutManager = LinearLayoutManager(this)
-       // binding.rvHistoric?.adapter = adapter
-
     }
 
     private fun onClickSymbol(s: String) {
@@ -83,21 +81,18 @@ class CalculatorFragment : Fragment() {
 
     private fun onClickEquals() {
         Log.i(TAG, "Click no botão =")
-
-        val expression = ExpressionBuilder(
-            binding.textVisor.text.toString()
+        val expression = binding.textVisor.text.toString()
+        val expressionBuilder = ExpressionBuilder(
+            expression
         ).build()
-
-
-        val operationUI = OperationUI(
-            binding.textVisor.text.toString(),
-            expression.evaluate().toString()
+        val result = expressionBuilder.evaluate().toString()
+        binding.textVisor.text = result
+        (activity as MainActivity).addOperation(
+            OperationUI(
+                expression = expression,
+                result = result
+            )
         )
-//        historico.add(operationUI)
-  //      adapter.updateItems(historico)
-        binding.textVisor.text = expression.evaluate().toString()
-
-        Log.i(TAG, "O result é ${binding.textVisor.text}")
-
+        Log.i(TAG, "O resultado é $result")
     }
 }

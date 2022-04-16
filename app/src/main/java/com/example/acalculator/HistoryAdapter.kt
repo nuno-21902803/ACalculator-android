@@ -3,11 +3,12 @@ package com.example.acalculator
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.acalculator.databinding.ItemExpressionBinding
 
 class HistoryAdapter(
-    private val onOperationClick: (String) -> Unit,
+    private val supportFragmentManager: FragmentManager,
     private var items: List<OperationUI> = listOf()
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
@@ -25,7 +26,7 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            onOperationClick(items[position].toString())
+            NavigationManager.goToOperationDetail(supportFragmentManager,items[position])
         }
 
         holder.binding.textExpression.text = items[position].expression

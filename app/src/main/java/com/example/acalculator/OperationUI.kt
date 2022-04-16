@@ -17,7 +17,7 @@ class OperationUI(
 
     @SuppressLint("SimpleDateFormat")
     fun getOperationDate(): String {
-        val format = SimpleDateFormat("dd-MM-yyyy' - T'HH:mm:ss")
+        val format = SimpleDateFormat("dd-MM-yyyy' - 'HH:mm:ss")
         return format.format(timeStamp)
     }
 
