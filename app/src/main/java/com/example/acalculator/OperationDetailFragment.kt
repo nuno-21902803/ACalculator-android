@@ -38,6 +38,7 @@ class OperationDetailFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
+        binding.textUuid.text = operationUi?.uuid
         binding.textExpression.text = operationUi?.expression
         binding.textResult.text = "=${operationUi?.result}"
         binding.textDatetime.text = operationUi?.getOperationDate()

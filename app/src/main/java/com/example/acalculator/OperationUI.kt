@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 
 @Parcelize
 class OperationUI(
+    val uuid: String,
     val expression: String,
     val result: Double,
     private val timeStamp: Long = System.currentTimeMillis()

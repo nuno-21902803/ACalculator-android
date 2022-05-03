@@ -68,11 +68,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addOperation(operation:OperationUI) {
-        operations.add(operation)
-    }
-
-    fun getOperations() = operations
 }
 
 
