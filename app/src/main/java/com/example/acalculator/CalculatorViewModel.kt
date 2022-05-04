@@ -1,13 +1,20 @@
 package com.example.acalculator
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
-    private val model = CalculatorModel
+class CalculatorViewModel(application: Application):
+AndroidViewModel(application){
+
+    private val model = CalculatorModel(
+        CalculatorDatabase.getInstance(application).operationDao()
+    )
+
     private val TAG = MainActivity::class.java.simpleName
 
     fun getDisplayValue() = model.display
@@ -17,23 +24,16 @@ class CalculatorViewModel : ViewModel() {
         return model.insertSymbol(symbol)
     }
 
-    fun onClickEquals(): String {
-        Log.i(TAG, "Click \'=\'")
-        val result = model.performOperation()
-        return result.toString()
+    fun onClickEquals(onSaved: () -> Unit): String {
+        model.performOperation(onSaved)
+        val result = getDisplayValue().toDouble()
+        return if(result % 1 == 0.0) result.toLong().toString() else result.toString()
     }
 
-    fun getHistory(callback: (List<OperationUI>) -> Unit) {
+    fun getHistory(onFinished:  (List<OperationUI>) -> Unit) {
         Log.i(TAG, "CalculatorViewModel get history")
-        model.getAllOperations { operations ->
-            val history =
-                operations.map {
-                    OperationUI(it.uuid, it.expression, it.result, it.timestamp)
-                }
-            CoroutineScope(Dispatchers.Main).launch {
-                callback(history)
-                Log.wtf(TAG, history.toString())
-            }
+        CoroutineScope(Dispatchers.Main).launch{
+            model.getAllOperations(onFinished)
         }
     }
 
@@ -42,7 +42,11 @@ class CalculatorViewModel : ViewModel() {
         return model.clearDisplay()
     }
 
+
+
     fun deleteOperation(uuid: String, onSuccess: () -> Unit) {
         model.deleteOperation(uuid, onSuccess)
     }
+
+
 }

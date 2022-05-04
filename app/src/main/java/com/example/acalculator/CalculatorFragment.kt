@@ -10,13 +10,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.acalculator.databinding.FragmentCalculatorBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
 
 
 class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentCalculatorBinding
     private lateinit var viewModel: CalculatorViewModel
-
+    private var adapter =
+        HistoryAdapter(onClick = ::onOperationClick, onLongClick = ::onOperationLongClick)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,10 +64,46 @@ class CalculatorFragment : Fragment() {
             binding.textVisor.text = viewModel.onClickSymbol("B")
         }
         binding.buttonEquals.setOnClickListener {
-            binding.textVisor.text = viewModel.onClickEquals()
+            onClickEquals()
         }
 
     }
 
 
+    private fun onClickEquals() {
+        val displayUpdated = viewModel.onClickEquals {
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.getHistory {
+                    updateHistory(it.map {
+                        OperationRoom(
+                            it.uuid,
+                            it.expression,
+                            it.result
+                        )
+                    })
+                }
+            }
+        }
+        binding.textVisor.text = displayUpdated
+    }
+
+    private fun updateHistory(operations: List<OperationRoom>) {
+        val history =
+            operations.map { OperationUI(it.uuid, it.expression, it.result, it.timestamp) }
+        CoroutineScope(Dispatchers.Main).launch {
+            adapter.updateItems(history)
+        }
+    }
+
+    private fun onOperationClick(operationUi: OperationUI) {
+        NavigationManager.goToOperationDetail(parentFragmentManager, operationUi)
+    }
+
+    private fun onOperationLongClick(operation: OperationUI): Boolean {
+        /*
+        Toast.makeText(context, getString(R.string.deleting), Toast.LENGTH_SHORT).show()
+        viewModel.onDeleteOperation(operation.uuid) { viewModel.onGetHistory { updateHistory(it) } }
+         */
+        return false
+    }
 }

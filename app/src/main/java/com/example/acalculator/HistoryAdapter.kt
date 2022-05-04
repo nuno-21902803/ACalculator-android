@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.acalculator.databinding.ItemExpressionBinding
 
 class HistoryAdapter(
-    private val supportFragmentManager: FragmentManager,
-    private var items: List<OperationUI> = listOf()
+    private val onClick: (OperationUI) -> Unit,
+    private val onLongClick: (OperationUI) -> Boolean,
+    private var items: List<OperationUI> = listOf(),
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(val binding: ItemExpressionBinding) :
@@ -19,18 +20,22 @@ class HistoryAdapter(
         return HistoryViewHolder(
             ItemExpressionBinding.inflate(
                 LayoutInflater.from(parent.context),
-                parent, false
+                parent,
+                false
             )
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            NavigationManager.goToOperationDetail(supportFragmentManager,items[position])
-        }
+        if (items.isNotEmpty()) {
+            holder.itemView.setOnClickListener { onClick(items[position]) }
+            holder.itemView.setOnLongClickListener { onLongClick(items[position]) }
 
-        holder.binding.textExpression.text = items[position].expression
-        holder.binding.textResult.text = items[position].result.toString()
+            holder.binding.textExpression.text = items[position].expression
+            holder.binding.textResult.text = items[position].result.toString()
+            holder.binding.textUuid.text = "UUID:${items[position].uuid}"
+        }
     }
 
     override fun getItemCount() = items.size

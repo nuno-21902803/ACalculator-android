@@ -1,16 +1,18 @@
 package com.example.acalculator
 
+import android.media.VolumeShaper
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.util.*
 
-object CalculatorModel {
+class CalculatorModel(private val dao: OperationDao) {
 
     private val TAG = MainActivity::class.java.simpleName
     var display: String = "0"
-    private val history = mutableListOf<Operation>()
+        private set
 
     fun insertSymbol(symbol: String): String {
 
@@ -37,39 +39,38 @@ object CalculatorModel {
         return display
     }
 
-    fun performOperation(): Double {
+    fun performOperation(onFinished: () -> Unit): Double {
         val expressionBuilder = ExpressionBuilder(display).build()
         val expression = display
         val result = expressionBuilder.evaluate()
         Log.i(TAG, "CalculatorModel performs operation -> $expression=$result")
+
+        val operation = OperationRoom(
+            expression = expression, result = result, timestamp = Date().time
+        )
         CoroutineScope(Dispatchers.IO).launch {
-            addToHistory(expression, result)
+            dao.insert(operation = operation)
+            onFinished()
         }
         display = result.toString()
         return result
     }
 
-    suspend fun addToHistory(expression: String, result: Double) {
-       ///////Thread.sleep(15 * 1000)
-        history.add(Operation(expression = expression, result = result))
-        Log.i(TAG, "CalculatorModel added $expression=$result to history")
-    }
 
-
-    fun getAllOperations(callback: (List<Operation>) -> Unit) {
+    fun getAllOperations(onFinished: (List<OperationUI>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             //Thread.sleep(30 * 1000)
-            //callback é como se fosse um return( mas temos que ter definido na funcao) ln.61
-            callback(history.toList())
+            val operations = dao.getAll()
+            onFinished(operations.map {
+                OperationUI(it.uuid, it.expression, it.result, it.timestamp)
+            })
         }
-
     }
+
 
     fun deleteOperation(uuid: String, onSuccess: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            //Thread.sleep(10 * 1000)
-            val operation = history.find { it.uuid == uuid }
-            history.remove(operation)
+            dao.deleteById(uuid)
             onSuccess()
         }
     }
