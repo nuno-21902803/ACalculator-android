@@ -20,36 +20,27 @@ import kotlinx.coroutines.launch
 private const val ARG_OPERATIONS = "param1"
 
 class HistoryFragment : Fragment() {
+    private lateinit var model: CalculatorModel
+    private var adapter =
+        HistoryAdapter(onClick = ::onOperationClick, onLongClick = ::onOperationLongClick)
     private lateinit var binding: FragmentHistoryBinding
-    private lateinit var viewModel: CalculatorViewModel
-    private var history: List<OperationUI>? = null
-    private var adapter: HistoryAdapter = HistoryAdapter(::onOperationClick, ::onOperationLongClick)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            history = it.getParcelableArrayList(ARG_OPERATIONS)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        model = CalculatorRoom(CalculatorDatabase.getInstance(requireContext()).operationDao())
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.history)
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_history, container, false)
-        viewModel = ViewModelProvider(this).get(CalculatorViewModel::class.java)
         binding = FragmentHistoryBinding.bind(view)
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        binding.rvHistoric.layoutManager = LinearLayoutManager(activity as Context)
         binding.rvHistoric.adapter = adapter
-        viewModel.getHistory { updateHistory(it) }
+        model.getHistory { updateHistory(it) }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -63,8 +54,25 @@ class HistoryFragment : Fragment() {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 
+    private fun onOperationClick(operation: OperationUI) {
+        NavigationManager.goToOperationDetail(parentFragmentManager, operation)
+    }
+
+    private fun onOperationLongClick(operation: OperationUI): Boolean {
+        Toast.makeText(requireContext(), "DELETING_OP", Toast.LENGTH_SHORT).show()
+        model.deleteOperation(operation.uuid) { model.getHistory { updateHistory(it) } }
+        return false
+    }
+
     private fun updateHistory(operations: List<OperationUI>) {
-        val history = operations
+        val history = operations.map {
+            OperationUI(
+                uuid = it.uuid,
+                expression = it.expression,
+                result = it.result,
+                timeStamp = it.getOperationDate().toLong()
+            )
+        }
         CoroutineScope(Dispatchers.Main).launch {
             showHistory(history.isNotEmpty())
             adapter.updateItems(history)
@@ -77,15 +85,5 @@ class HistoryFragment : Fragment() {
         } else {
             binding.rvHistoric.visibility = View.GONE
         }
-    }
-
-    private fun onOperationClick(operation: OperationUI) {
-        NavigationManager.goToOperationDetail(parentFragmentManager, operation)
-    }
-
-    private fun onOperationLongClick(operation: OperationUI): Boolean {
-        Toast.makeText(context,"DELETING", Toast.LENGTH_SHORT).show()
-        viewModel.deleteOperation(operation.uuid) { viewModel.getHistory { updateHistory(it) } }
-        return false
     }
 }

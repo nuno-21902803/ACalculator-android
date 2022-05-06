@@ -7,7 +7,6 @@ abstract class CalculatorModel() {
 
     private val TAG = MainActivity::class.java.simpleName
     var expression: String = "0"
-        private set
 
     fun insertSymbol(symbol: String): String {
 
