@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/text_visor"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/light_gray"
+        android:background="@color/light_grey"
         android:padding="16dp"
         android:text="0"
         android:textAlignment="textEnd"
@@ -45,7 +46,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/grey"
 
                     android:text="C"
                     android:textSize="35sp"
@@ -57,7 +58,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/grey"
                     android:text="b"
                     android:textSize="35sp" />
 
