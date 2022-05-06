@@ -6,12 +6,15 @@ import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
 
 class CalculatorViewModel(application: Application):
 AndroidViewModel(application){
 
-    private val model = CalculatorRoom(
-        CalculatorDatabase.getInstance(application).operationDao()
+    private val model = CalculatorRetrofit(
+        RetrofitBuilder.getInstance(
+            "https://cm-calculadora.herokuapp.com/"
+        )
     )
 
     private val TAG = MainActivity::class.java.simpleName
