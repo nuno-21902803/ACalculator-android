@@ -1,5 +1,6 @@
 package com.example.acalculator
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acalculator.databinding.ActivityMainBinding
 import com.example.acalculator.databinding.FragmentCalculatorBinding
@@ -17,7 +19,6 @@ import java.sql.Timestamp
 class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentCalculatorBinding
     private val TAG = CalculatorFragment::class.java.simpleName
-
 
 
     override fun onCreateView(
@@ -39,6 +40,7 @@ class CalculatorFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
         binding.button1.setOnClickListener { onClickSymbol("1") }
         binding.button2.setOnClickListener { onClickSymbol("2") }
         binding.button3.setOnClickListener { onClickSymbol("3") }
@@ -70,7 +72,7 @@ class CalculatorFragment : Fragment() {
 
         }
 
-        //binding.rvHistoric?.layoutManager = LinearLayoutManager(this)
+        binding.rvHistoric?.layoutManager = LinearLayoutManager(activity as Context)
        // binding.rvHistoric?.adapter = adapter
 
     }
@@ -106,5 +108,19 @@ class CalculatorFragment : Fragment() {
 
         Log.i(TAG, "O result é ${binding.textVisor.text}")
 
+    }
+}
+
+object NavigarionManager{
+
+    private fun placeFragment(fm: FragmentManager, fragment: Fragment){
+        val transition = fm.beginTransaction()
+        transition.replace(R.id.frame, fragment)
+        transition.addToBackStack(null)
+        transition.commit()
+    }
+
+    fun goToCalculatorFragment(fm: FragmentManager){
+        placeFragment(fm, CalculatorFragment())
     }
 }
