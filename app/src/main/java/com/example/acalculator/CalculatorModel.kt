@@ -1,83 +1,60 @@
 package com.example.acalculator
 
-import android.media.VolumeShaper
 import android.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.util.*
 
-class CalculatorModel(private val dao: OperationDao) {
+abstract class CalculatorModel() {
 
     private val TAG = MainActivity::class.java.simpleName
-    var display: String = "0"
+    var expression: String = "0"
         private set
 
     fun insertSymbol(symbol: String): String {
 
         if (symbol == "C") {
-            display = "0"
+            expression = "0"
 
         } else if (symbol == "B") {
-            display = if (display.length > 1) {
-                display.subSequence(0, display.length - 1) as String
+            expression = if (expression.length > 1) {
+                expression.subSequence(0, expression.length - 1) as String
 
             } else {
                 "0"
             }
 
         } else {
-            display = if (display == "0") {
+            expression = if (expression == "0") {
                 symbol
             } else {
-                "$display$symbol"
+                "$expression$symbol"
             }
         }
         Log.i(TAG, "CalculatorModel new symbol $symbol")
 
-        return display
+        return expression
     }
 
-    fun performOperation(onFinished: () -> Unit): Double {
-        val expressionBuilder = ExpressionBuilder(display).build()
-        val expression = display
+    open fun performOperation(onFinished: () -> Unit) {
+        val expressionBuilder = ExpressionBuilder(expression).build()
+        val expression = expression
         val result = expressionBuilder.evaluate()
         Log.i(TAG, "CalculatorModel performs operation -> $expression=$result")
 
-        val operation = OperationRoom(
-            expression = expression, result = result, timestamp = Date().time
-        )
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.insert(operation = operation)
-            onFinished()
-        }
-        display = result.toString()
-        return result
+        this.expression = result.toString()
+        onFinished()
     }
 
-
-    fun getAllOperations(onFinished: (List<OperationUI>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            //Thread.sleep(30 * 1000)
-            val operations = dao.getAll()
-            onFinished(operations.map {
-                OperationUI(it.uuid, it.expression, it.result, it.timestamp)
-            })
-        }
-    }
-
-
-    fun deleteOperation(uuid: String, onSuccess: () -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.deleteById(uuid)
-            onSuccess()
-        }
-    }
 
     fun clearDisplay(): String {
-        display = "0"
+        expression = "0"
         Log.i(TAG, "CalculatorModel cleared display")
-        return display
+        return expression
     }
+
+
+    abstract fun insertOperations(operations: List<OperationUI>, onFinished: (List<OperationUI>) -> Unit)
+    abstract fun getLastOperation(onFinished: (String) -> Unit)
+    abstract fun deleteOperation(uuid: String, onFinished: () -> Unit)
+    abstract fun deleteAllOperations(onFinished: () -> Unit)
+    abstract fun getHistory(onFinished: (List<OperationUI>) -> Unit)
 }

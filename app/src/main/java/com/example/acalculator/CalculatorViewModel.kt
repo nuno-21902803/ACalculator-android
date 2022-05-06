@@ -3,7 +3,6 @@ package com.example.acalculator
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,13 +10,13 @@ import kotlinx.coroutines.launch
 class CalculatorViewModel(application: Application):
 AndroidViewModel(application){
 
-    private val model = CalculatorModel(
+    private val model = CalculatorRoom(
         CalculatorDatabase.getInstance(application).operationDao()
     )
 
     private val TAG = MainActivity::class.java.simpleName
 
-    fun getDisplayValue() = model.display
+    fun getDisplayValue() = model.expression
 
     fun onClickSymbol(symbol: String): String {
         Log.i(TAG, "Click \'$symbol\'")
@@ -33,7 +32,7 @@ AndroidViewModel(application){
     fun getHistory(onFinished:  (List<OperationUI>) -> Unit) {
         Log.i(TAG, "CalculatorViewModel get history")
         CoroutineScope(Dispatchers.Main).launch{
-            model.getAllOperations(onFinished)
+            model.getHistory(onFinished)
         }
     }
 
