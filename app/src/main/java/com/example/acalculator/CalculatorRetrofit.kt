@@ -19,9 +19,7 @@ class CalculatorRetrofit(retrofit: Retrofit) : CalculatorModel() {
         super.performOperation {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val body = PostOperationRequest(
-                        currentExpression, expression.toDouble(), timestamp = Date().time
-                    )
+                    val body = PostOperationRequest(currentExpression, expression.toDouble(), Date().time)
                     val result = service.insert(body)
                     Log.i(TAG, result.toString())
                 } catch (ex: HttpException) {
@@ -32,42 +30,32 @@ class CalculatorRetrofit(retrofit: Retrofit) : CalculatorModel() {
         }
     }
 
-    override fun insertOperations(
-        operations: List<OperationUI>,
-        onFinished: (List<OperationUI>) -> Unit
-    ) {
-        throw  Exception("Not implemented on WebService")
+    override fun insertOperations(operations: List<OperationUI>, onFinished: (List<OperationUI>) -> Unit) {
+        throw Exception("Not implemented on web service")
     }
 
     override fun getLastOperation(onFinished: (String) -> Unit) {
         getHistory { history ->
-            onFinished(history.sortedByDescending { it.getOperationDate() }.first().expression)
-
+            onFinished(history.sortedByDescending { it.timeStamp }.first().expression)
         }
     }
 
     override fun deleteOperation(uuid: String, onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun deleteAllOperations(onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun getHistory(onFinished: (List<OperationUI>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val operations = service.getAll()
-                onFinished(
-                    operations.map {
-                        OperationUI(it.uuid, it.expression, it.result, it.timestamp)
-                    }
-                )
+                onFinished(operations.map { OperationUI(it.uuid, it.expression, it.result, it.timestamp) })
             } catch (ex: HttpException) {
                 Log.e(TAG, ex.message())
             }
         }
-
-
     }
 }
