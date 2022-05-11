@@ -17,11 +17,11 @@ interface OperationDao {
     @Query("SELECT * FROM operation order by timestamp asc")
     suspend fun getAll() : List<OperationRoom>
 
-    @Query("SELECT * FROM operation where uuid = :uuid")
+    @Query("SELECT * FROM operation order by timestamp desc limit 1")
     suspend fun getByID(uuid: String) : OperationRoom
 
-    @Query("DELETE FROM operation ORDER BY timestamp DESC LIMIT 1")
-    suspend fun getLastOperation(): OperationRoom
+    @Query("DELETE FROM operation  where uuid = :uuid")
+    suspend fun getLastOperation(uuid: String): OperationRoom
 
 
     @Query("DELETE FROM operation WHERE uuid = :uuid")
