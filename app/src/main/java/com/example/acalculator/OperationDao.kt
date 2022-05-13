@@ -20,7 +20,7 @@ interface OperationDao {
     @Query("SELECT * FROM operation where uuid = :uuid")
     suspend fun getByID(uuid: String) : OperationRoom
 
-    @Query("DELETE FROM operation ORDER BY timestamp DESC LIMIT 1")
+    @Query("SELECT * FROM operation ORDER BY timestamp DESC LIMIT 1")
     suspend fun getLastOperation(): OperationRoom
 
 

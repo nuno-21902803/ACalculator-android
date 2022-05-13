@@ -1,6 +1,5 @@
 package com.example.acalculator
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.*
@@ -10,7 +9,6 @@ object ConnectivityUtil {
 
     private val TAG = ConnectivityUtil::class.java.simpleName
 
-    @SuppressLint("ServiceCast")
     fun isOnline(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
@@ -28,4 +26,5 @@ object ConnectivityUtil {
         }
         return false
     }
+
 }

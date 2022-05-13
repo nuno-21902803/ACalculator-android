@@ -2,17 +2,15 @@ package com.example.acalculator
 
 import android.annotation.SuppressLint
 import android.content.Context
-import java.lang.IllegalStateException
 
-class CalculatorRepository(
+class CalculatorRepository private constructor(
     private val context: Context,
-    private val local: CalculatorModel,
-    private val remote: CalculatorModel
+    private val local: CalculatorModel, private val remote: CalculatorModel
 ) {
 
     fun getExpression() = local.expression
 
-    fun insertSymbol(symbol: String): String{
+    fun insertSymbol(symbol: String): String {
         return remote.insertSymbol(symbol)
     }
 
@@ -32,7 +30,7 @@ class CalculatorRepository(
     }
 
     fun getLastOperation(onFinished: (String) -> Unit) {
-        if(ConnectivityUtil.isOnline(context)) {
+        if (ConnectivityUtil.isOnline(context)) {
             remote.getLastOperation(onFinished)
         } else {
             local.getLastOperation(onFinished)
@@ -44,7 +42,7 @@ class CalculatorRepository(
     }
 
     fun getHistory(onFinished: (List<OperationUI>) -> Unit) {
-        if(ConnectivityUtil.isOnline(context)) {
+        if (ConnectivityUtil.isOnline(context)) {
             remote.getHistory { history ->
                 local.deleteAllOperations {
                     local.insertOperations(history) {
@@ -57,21 +55,21 @@ class CalculatorRepository(
         }
     }
 
-    companion object{
+    companion object {
+
         @SuppressLint("StaticFieldLeak")
         private var instance: CalculatorRepository? = null
 
         fun init(context: Context, local: CalculatorModel, remote: CalculatorModel) {
-            synchronized(this){
-                if(instance == null){
+            synchronized(this) {
+                if (instance == null) {
                     instance = CalculatorRepository(context, local, remote)
                 }
             }
         }
 
-        fun getInstance(): CalculatorRepository{
-            return instance ?:
-            throw IllegalStateException("Repo not initialized")
+        fun getInstance(): CalculatorRepository {
+            return instance ?: throw IllegalStateException("Repository not initialized")
         }
 
     }
