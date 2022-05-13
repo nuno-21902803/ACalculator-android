@@ -27,4 +27,7 @@ object NavigationManager {
         transition.commit()
     }
 
+    fun goToMapFragment(fm: FragmentManager) {
+        placeFragment(fm, MapFragment())
+    }
 }
